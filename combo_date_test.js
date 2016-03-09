@@ -146,3 +146,35 @@ function test_minmax(){
   document.body.removeChild(form);
   return res;
 }
+
+function test_minmax(){
+  var my_id = 'my_id', form = create_date_form(my_id);
+  document.body.appendChild(form);
+  var d = new ComboDate(my_id);
+
+  d.base_year.value = 2016;
+  d.base_month.value = 9;
+  d.base_month.onchange();
+  d.base_day.value = 16;
+
+  var onchange_value = {};
+  d.base.onchange = (function(rd, d) {
+    return function(){
+      rd.valid = d.isValid();
+      rd.res = d.getValue();
+    }
+  })(onchange_value, d);
+
+  var tests = [];
+
+  d.base_day.value = 20;
+  d.base_day.onchange();
+  tests.push(
+    // use toDateString() for TZ shit
+    onchange_value.res.toDateString() == new Date('2016-09-20').toDateString()
+    || 'Wrong value' + onchange_value.res);
+
+  var res = tests.map(function(v, i) {return v === true ? '' : v}).join('');
+  document.body.removeChild(form);
+  return res;
+}

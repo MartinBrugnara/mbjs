@@ -124,10 +124,8 @@ function ComboDate(base_id) {
       }
 
       // Check precondition
-      if (isNaN(year) || isNaN(month)) return;
-
-      // Respect constraint
-      {
+      if (!isNaN(year) && !isNaN(month)) {
+        // Respect constraint
         var hiding_days = [], min = that.getMin(), max = that.getMax();
 
         // Min
@@ -151,14 +149,29 @@ function ComboDate(base_id) {
             hiding_day_options[i].disabled = true;
         }
       }
+
+      that.trigger();
+
+      return;
     }
+  }
+
+  this.trigger = function() {
+      if (this.base !== undefined && this.base.onchange instanceof Function)
+          this.base.onchange();
   }
 
   this.init = function() {
     this.base_pruning();
     this.base_year.onchange = this.on_month_change();
     this.base_month.onchange = this.on_month_change();
-  }
+    this.base_day.onchange = function(context){
+      var that = context;
+      return function(){
+        that.trigger();
+      };
+    }(this);
+  };
 
   this.init();
 }
