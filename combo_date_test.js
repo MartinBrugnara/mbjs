@@ -84,15 +84,22 @@ function test_autoreset_day() {
   var d = new ComboDate(my_id);
 
   d.base_year.value = 2016;
-  d.base_month.value = 2;
+  d.base_month.value = 1;
   d.base_month.onchange();
-  d.base_day.value = 10;
+  d.base_day.value = 30;
 
   var tests = [];
-  tests.push(d.base_day.value == 10);
-  d.base_month.value = 3;
+  // Reset (30 Feb does not exists)
+  tests.push(d.base_day.value == 30);
+  d.base_month.value = 2;
   d.base_month.onchange();
   tests.push(d.base_day.value == '');
+
+  // Keep (15 Mar exists)
+  d.base_day.value = 15;
+  d.base_month.value = 3;
+  d.base_month.onchange();
+  tests.push(d.base_day.value == 15);
 
   var res = tests.map(function(v, i) {return v === true ? '' : v}).join('');
   document.body.removeChild(form);

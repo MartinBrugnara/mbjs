@@ -120,7 +120,6 @@ function ComboDate(base_id) {
       {
         var day_options = that.base_day.querySelectorAll('option:not([value=""]');
         for (var i=0; i<day_options.length; i++) day_options[i].disabled = false;
-        that.base_day.value = '';
       }
 
       // Check precondition
@@ -148,6 +147,11 @@ function ComboDate(base_id) {
           for(var i=0; i<hiding_day_options.length; i++)
             hiding_day_options[i].disabled = true;
         }
+      }
+
+      // If selected day is not valid for new month reset it
+      if (that.base_day.querySelector('option[value="'+that.base_day.value+'"]').disabled) {
+        that.base_day.value = '';
       }
 
       that.trigger();
