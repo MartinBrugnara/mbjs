@@ -118,7 +118,7 @@ function ComboDate(base_id) {
 
       // reset:
       {
-        var day_options = that.base_day.querySelectorAll('option:not([value=""]');
+        var day_options = that.base_day.querySelectorAll('option:not([value=""])');
         for (var i=0; i<day_options.length; i++) day_options[i].disabled = false;
       }
 
